@@ -14,7 +14,7 @@ class HomiliesController extends Controller
      */
     public function index()
     {
-        return Homilie::all();
+        return Homilie::orderBy('homilies.date','DESC')->get();
     }
 
     /**
