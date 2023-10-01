@@ -69,7 +69,7 @@ class HomiliesController extends Controller
      */
     public function edit()
     {
-        return Homilie::orderBy('date', 'desc')->first();
+
     }
 
     /**
@@ -87,4 +87,16 @@ class HomiliesController extends Controller
     {
         //
     }
+
+    public function getDescHomily()
+    {
+        $homily = Homilie::orderBy('date', 'desc')->first();
+
+        if ($homily) {
+            return $homily;
+        } else {
+            return response()->json(['message' => 'No se encontraron homilías.'], 404);
+        }
+    }
+
 }
