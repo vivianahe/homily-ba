@@ -43,6 +43,7 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
+            'hash' => false,
         ],
     ],
 
@@ -68,11 +69,16 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'api_tokens', // Cambia 'users' a 'api_tokens'
+            'hash' => false,
+        ],
+        'api_tokens' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class, // Aquí, asegúrate de apuntar al modelo de usuarios correcto
+        ],
     ],
 
     /*

@@ -10,16 +10,21 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
+        
         if (Auth::attempt($credentials)) {
             // Inicio de sesión exitoso
             $user = Auth::user();
             $token = $user->createToken('API Token')->accessToken;
-
-            return response()->json(['token' => $token], 200);
+        
+            return response()->json([
+                'token' => $token, // Cambia 'token' a 'api_token'
+                'name' => $user->name,
+                'email' => $user->email,
+                'api_token'=>$user->api_token
+            ], 200);
         } else {
             // Inicio de sesión fallido
             return response()->json(['error' => 'Credenciales inválidas'], 401);
         }
-    }
+    }    
 }
