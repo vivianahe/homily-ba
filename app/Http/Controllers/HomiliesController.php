@@ -6,6 +6,8 @@ use App\Models\Homilie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\ContactFormNotification;
+use Illuminate\Support\Facades\Notification;
 
 class HomiliesController extends Controller
 {
@@ -99,4 +101,9 @@ class HomiliesController extends Controller
         }
     }
 
+    public function postFrmContact(Request $request)
+    {
+        $data = $request->all(); // Los datos del formulario
+        Notification::route('mail', 'vivianaherrerahe@gmail.com')->notify(new ContactFormNotification($data));
+    }
 }
