@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource("homilies", HomiliesController::class);
 Route::get('/homilies_desc', [HomiliesController::class, 'getDescHomily']);
+Route::post('/contact', [HomiliesController::class, 'postFrmContact']);
 Route::apiResource("users", UserController::class);
 Route::post('/login', [AuthController::class, 'login']);
 
