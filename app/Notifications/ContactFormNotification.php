@@ -38,14 +38,15 @@ class ContactFormNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-        ->subject('Desde Homilías Uriel Alejandro')
+            ->greeting('Hola!')
+            ->subject('Desde Homilías Uriel Alejandro')
             ->line('Has recibido un nuevo mensaje de contacto desde la página de homilías:')
             ->line('Nombre: ' . $this->data['name'])
             ->line('Correo Electrónico: ' . $this->data['email'])
             ->line('Teléfono: ' . $this->data['phone'])
             ->line('Mensaje:')
-            ->line($this->data['message']);
-
+            ->line($this->data['message'])
+            ->salutation('Saludos,');
     }
 
     /**
