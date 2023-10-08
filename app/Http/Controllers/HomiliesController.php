@@ -32,31 +32,30 @@ class HomiliesController extends Controller
      */
     public function store(Request $request)
     {
-        dd("aaaa");
-        // $audio = $request->file('audio');
-        // $img = $request->file('img');
-        // $fileAudio= $audio->getClientOriginalName();
-        // $fileImg= $img->getClientOriginalName();
-        // $name_audio = date('_H_i_s').'_'.$fileAudio;
-        // $name_img = date('_H_i_s').'_'.$fileImg;
-        // Storage::disk('AudioHomily')->put($name_audio, file_get_contents($audio->getRealPath()));
-        // Storage::disk('ImgHomily')->put($name_img, file_get_contents($img->getRealPath()));
+        $audio = $request->file('audio');
+        $img = $request->file('img');
+        $fileAudio= $audio->getClientOriginalExtension();
+        $fileImg= $img->getClientOriginalExtension();
+        $name_audio = $request->date.'_audio.'.$fileAudio;
+        $name_img = $request->date.'_img.'.$fileImg;
+        Storage::disk('audioHomily')->put($name_audio, file_get_contents($audio->getRealPath()));
+        Storage::disk('imgHomily')->put($name_img, file_get_contents($img->getRealPath()));
        
-        // $hom = Homilie::Create([
-        //     'date' => $request->date,
-        //     'citation' => $request->citation,
-        //     'title' => $request->title,
-        //     'reading' => $request->reading,
-        //     'gospel' => $request->gospel,
-        //     'img' => $name_img,
-        //     'audio' => $name_audio,
-        //     'user_id' => Auth::id(),
-        // ]);
+        $hom = Homilie::Create([
+            'date' => $request->date,
+            'citation' => $request->citation,
+            'title' => $request->title,
+            'reading' => $request->reading,
+            'gospel' => 'aaa',
+            'img' => $name_img,
+            'audio' => $name_audio,
+            'user_id' => Auth::id(),
+        ]);
 
-        // return response()->json([
-        //     'data' => $hom,
-        //     'message'=>"Homilía guardada exitosamente!"
-        // ]);
+        return response()->json([
+            'data' => $hom,
+            'message'=>"Homilía guardada exitosamente!"
+        ]);
     }
 
     /**

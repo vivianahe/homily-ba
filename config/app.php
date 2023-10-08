@@ -186,4 +186,6 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'path_audio' =>  env('PATH_AUDIO'),
+    'path_img' =>  env('PATH_IMAGE'),
 ];
