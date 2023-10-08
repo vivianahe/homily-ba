@@ -27,6 +27,10 @@ Route::post('/contact', [HomiliesController::class, 'postFrmContact']);
 Route::apiResource("users", UserController::class);
 Route::post('/login', [AuthController::class, 'login']);
 
+
+Route::post('/addHomilies', [HomiliesController::class, 'store']);
+
 Route::middleware('auth:api')->group(function () {
     Route::apiResource("getHomilies", HomiliesController::class);
+
 });
