@@ -46,10 +46,10 @@ class HomiliesController extends Controller
             'citation' => $request->citation,
             'title' => $request->title,
             'reading' => $request->reading,
-            'gospel' => 'aaa',
+            'gospel' => $request->gospel,
             'img' => $name_img,
             'audio' => $name_audio,
-            'user_id' => Auth::id(),
+            'user_id' => $request->user_id,
         ]);
 
         return response()->json([
