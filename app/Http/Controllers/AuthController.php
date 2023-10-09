@@ -20,6 +20,7 @@ class AuthController extends Controller
                 'token' => $token, // Cambia 'token' a 'api_token'
                 'name' => $user->name,
                 'email' => $user->email,
+                'user_id' => $user->id,
                 'api_token'=>$user->api_token
             ], 200);
         } else {

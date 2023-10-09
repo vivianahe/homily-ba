@@ -42,16 +42,16 @@ class HomiliesController extends Controller
         // Storage::disk('AudioHomily')->put($name_audio, file_get_contents($audio->getRealPath()));
         // Storage::disk('ImgHomily')->put($name_img, file_get_contents($img->getRealPath()));
        
-        // $hom = Homilie::Create([
-        //     'date' => $request->date,
-        //     'citation' => $request->citation,
-        //     'title' => $request->title,
-        //     'reading' => $request->reading,
-        //     'gospel' => $request->gospel,
-        //     'img' => $name_img,
-        //     'audio' => $name_audio,
-        //     'user_id' => Auth::id(),
-        // ]);
+        $hom = Homilie::Create([
+            'date' => $request->date,
+            'citation' => $request->citation,
+            'title' => $request->title,
+            'reading' => $request->reading,
+            'gospel' => $request->gospel,
+            'img' => $name_img,
+            'audio' => $name_audio,
+            'user_id' => $request->user_id,
+        ]);
 
         // return response()->json([
         //     'data' => $hom,
