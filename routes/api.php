@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomiliesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PrayerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,7 @@ Route::get('/homilies_desc', [HomiliesController::class, 'getDescHomily']);
 Route::post('/contact', [HomiliesController::class, 'postFrmContact']);
 Route::apiResource("users", UserController::class);
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::apiResource("prayers", PrayerController::class);
 
 
 Route::middleware('auth:api')->group(function () {
