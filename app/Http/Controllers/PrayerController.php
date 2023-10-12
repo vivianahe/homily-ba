@@ -52,7 +52,7 @@ class PrayerController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Prayer::where('id', $id)->first();
     }
 
     /**
