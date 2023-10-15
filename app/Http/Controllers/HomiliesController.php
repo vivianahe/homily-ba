@@ -77,11 +77,45 @@ class HomiliesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // Validación de los datos de entrada
+        $validatedData = $request->validate([
+            'date' => 'required',
+            'citation' => 'required',
+            'title' => 'required',
+            'reading' => 'required',
+            'gospel' => 'required',
+            'user_id' => 'required',
+        ]);
+    
+        // Buscar el registro que deseas actualizar
+        $hom = Homilie::find($id);
+    
+        // Verificar si el registro existe
+        if (!$hom) {
+            return response()->json([
+                'message' => 'Homilía no encontrada',
+            ], 404);
+        }
+    
+        // Procesar y actualizar los campos necesarios
+        $hom->date = $validatedData['date'];
+        $hom->citation = $validatedData['citation'];
+        $hom->title = $validatedData['title'];
+        $hom->reading = $validatedData['reading'];
+        $hom->gospel = $validatedData['gospel'];
+        $hom->user_id = $validatedData['user_id'];
+    
+        // Guardar los cambios en la base de datos
+        $hom->save();
+    
+        return response()->json([
+            'data' => $hom,
+            'message' => 'Homilía actualizada exitosamente',
+        ]);
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */
@@ -105,5 +139,9 @@ class HomiliesController extends Controller
     {
         $data = $request->all(); // Los datos del formulario
         Notification::route('mail', 'vivianaherrerahe@gmail.com')->notify(new ContactFormNotification($data));
+    }
+    public function getHomeliasId(string $id)
+    {
+        return Homilie::find($id);
     }
 }

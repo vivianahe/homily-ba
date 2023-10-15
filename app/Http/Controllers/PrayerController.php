@@ -68,14 +68,45 @@ class PrayerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $prayer = Prayer::find($id);
+
+        if (!$prayer) {
+            return response()->json([
+                'message' => 'Oración no encontrada',
+            ], 404);
+        }
+
+        $prayer->date = $request->input('date', $prayer->date);
+        $prayer->link = $request->input('link', $prayer->link);
+        $prayer->user_id = $request->input('user_id', $prayer->user_id);
+
+        $prayer->save();
+
+        return response()->json([
+            'data' => $prayer,
+            'message' => 'Oración actualizada exitosamente!',
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $prayer = Prayer::find($id);
+    
+        if (!$prayer) {
+            return response()->json([
+                'message' => 'Oración no encontrada',
+            ], 404);
+        }
+    
+        $prayer->delete();
+    
+        return response()->json([
+            'data' => "ok",
+            'message' => 'Oración eliminada exitosamente',
+        ]);
     }
 }

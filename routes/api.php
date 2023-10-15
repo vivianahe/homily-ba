@@ -33,4 +33,5 @@ Route::apiResource("prayers", PrayerController::class);
 Route::middleware('auth:api')->group(function () {
     Route::apiResource("getHomilies", HomiliesController::class);
     Route::post('/addHomilies', [HomiliesController::class, 'store']);
+    Route::get('/getHomeliasId/{id}', [HomiliesController::class, 'getHomeliasId']);
 });
