@@ -86,41 +86,52 @@ class HomiliesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validación de los datos de entrada
-        $validatedData = $request->validate([
-            'date' => 'required',
-            'citation' => 'required',
-            'title' => 'required',
-            'reading' => 'required',
-            'gospel' => 'required',
-            'user_id' => 'required',
-        ]);
-
-        // Buscar el registro que deseas actualizar
-        $hom = Homilie::find($id);
-
-        // Verificar si el registro existe
+        $hom = Homilie::where([['date', $request->date], ['id', '!=', $id]])->exists();
+        dd($request);
         if (!$hom) {
+            $audio = $request->file('audio');
+            $img = $request->file('img');
+            dd($img);
+            $imgHom = Homilie::where('img', $request->img)->exists();
+            $dataHom = Homilie::where('id', $id)->first();
+            if ($imgHom) {
+                $name_img = $request->img;
+            } else {
+                unlink(public_path('support/imgHomily/'). $dataHom->img);
+                $fileImg = $img->getClientOriginalExtension();
+                $name_img = $request->date . '_img.' . $fileImg;
+                Storage::disk('imgHomily')->put($name_img, file_get_contents($img->getRealPath()));
+            }
+            $audHom = Homilie::where('audio', $request->audio)->exists();
+            if ($audHom) {
+                $name_audio = $request->audio;
+            } else {
+                unlink(public_path('support/audioHomily/'). $dataHom->audio);
+                $fileAudio = $audio->getClientOriginalExtension();
+                $name_audio = $request->date . '_audio.' . $fileAudio;
+                Storage::disk('audioHomily')->put($name_audio, file_get_contents($audio->getRealPath()));
+            }
+
+            Homilie::where('id', $id)->update([
+                'date' => $request->date,
+                'citation' => $request->citation,
+                'title' => $request->title,
+                'reading' => $request->reading,
+                'gospel' => $request->gospel,
+                'img' => $name_img,
+                'audio' => $name_audio,
+                'user_id' => $request->user_id
+            ]);
             return response()->json([
-                'message' => 'Homilía no encontrada',
-            ], 404);
+                'data' => $hom,
+                'message' => "Homilía actualizada exitosamente!"
+            ]);
+        } else {
+            return response()->json([
+                'data' => $hom,
+                'message' => "Ya existe una homilía con esa fecha."
+            ]);
         }
-
-        // Procesar y actualizar los campos necesarios
-        $hom->date = $validatedData['date'];
-        $hom->citation = $validatedData['citation'];
-        $hom->title = $validatedData['title'];
-        $hom->reading = $validatedData['reading'];
-        $hom->gospel = $validatedData['gospel'];
-        $hom->user_id = $validatedData['user_id'];
-
-        // Guardar los cambios en la base de datos
-        $hom->save();
-
-        return response()->json([
-            'data' => $hom,
-            'message' => 'Homilía actualizada exitosamente',
-        ]);
     }
 
     /**

@@ -68,24 +68,23 @@ class PrayerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $prayer = Prayer::find($id);
-
+        $prayer = Prayer::where([['date', $request->date], ['id', '!=', $id]])->exists();
         if (!$prayer) {
+            Prayer::where('id', $id)->update([
+                'date' => $request->date,
+                'link' => $request->link,
+                'user_id' => $request->user_id
+            ]);
             return response()->json([
-                'message' => 'Oración no encontrada',
-            ], 404);
+                'data' => $prayer,
+                'message' => "Oración actualizada exitosamente!"
+            ]);
+        } else {
+            return response()->json([
+                'data' => $prayer,
+                'message' => "Ya existe una oración con esa fecha."
+            ]);
         }
-
-        $prayer->date = $request->input('date', $prayer->date);
-        $prayer->link = $request->input('link', $prayer->link);
-        $prayer->user_id = $request->input('user_id', $prayer->user_id);
-
-        $prayer->save();
-
-        return response()->json([
-            'data' => $prayer,
-            'message' => 'Oración actualizada exitosamente!',
-        ]);
     }
 
 
