@@ -87,17 +87,14 @@ class HomiliesController extends Controller
     public function update(Request $request, $id)
     {
         $hom = Homilie::where([['date', $request->date], ['id', '!=', $id]])->exists();
-        dd($request);
         if (!$hom) {
-            $audio = $request->file('audio');
-            $img = $request->file('img');
-            dd($img);
             $imgHom = Homilie::where('img', $request->img)->exists();
             $dataHom = Homilie::where('id', $id)->first();
             if ($imgHom) {
                 $name_img = $request->img;
             } else {
-                unlink(public_path('support/imgHomily/'). $dataHom->img);
+                //unlink(public_path('support/imgHomily/'). $dataHom->img);
+                $img = $request->file('img');
                 $fileImg = $img->getClientOriginalExtension();
                 $name_img = $request->date . '_img.' . $fileImg;
                 Storage::disk('imgHomily')->put($name_img, file_get_contents($img->getRealPath()));
@@ -106,7 +103,8 @@ class HomiliesController extends Controller
             if ($audHom) {
                 $name_audio = $request->audio;
             } else {
-                unlink(public_path('support/audioHomily/'). $dataHom->audio);
+                unlink(public_path('support/audioHomily/') . $dataHom->audio);
+                $audio = $request->file('audio');
                 $fileAudio = $audio->getClientOriginalExtension();
                 $name_audio = $request->date . '_audio.' . $fileAudio;
                 Storage::disk('audioHomily')->put($name_audio, file_get_contents($audio->getRealPath()));
@@ -139,7 +137,21 @@ class HomiliesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $homilia = Homilie::find($id);
+        if ($homilia) {
+            unlink(public_path('support/imgHomily/') . $homilia->img);
+            unlink(public_path('support/audioHomily/') . $homilia->audio);
+            $homilia->delete();
+            return response()->json([
+                'data' => "ok",
+                'message' => "Homilía eliminada exitosamente!"
+            ]);
+        } else {
+            return response()->json([
+                'data' => null,
+                'message' => "Homilía no encontrada."
+            ]);
+        }
     }
 
     public function getDescHomily()

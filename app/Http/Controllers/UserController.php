@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\User;
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -33,7 +32,8 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
+                'api_token' => Str::random(60), // Genera un token aleatorio
             ]);
             return response()->json([
                 'data' => $user,
