@@ -25,15 +25,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource("homilies", HomiliesController::class);
 Route::get('/homilies_desc', [HomiliesController::class, 'getDescHomily']);
 Route::post('/contact', [HomiliesController::class, 'postFrmContact']);
-Route::apiResource("users", UserController::class);
 Route::post('/login', [AuthController::class, 'login']);
-Route::apiResource("prayers", PrayerController::class);
-
 
 Route::middleware('auth:api')->group(function () {
+    Route::apiResource("users", UserController::class);
     Route::apiResource("getHomilies", HomiliesController::class);
     Route::post('/addHomilies', [HomiliesController::class, 'store']);
     Route::get('/getHomeliasId/{id}', [HomiliesController::class, 'getHomeliasId']);
     Route::post('/updateHomilia', [HomiliesController::class, 'updateHomilia']);
-    
+    Route::apiResource("prayers", PrayerController::class);
 });
